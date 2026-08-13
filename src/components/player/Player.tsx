@@ -72,8 +72,10 @@ export function Player({ station, provider, onOpenSelector, isSelectorOpen }: Pl
             aria-expanded={isSelectorOpen}
             className="flex min-h-[36px] shrink-0 items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[11px] font-medium text-amber-50/85 transition-colors hover:bg-white/10 sm:text-xs"
           >
-            {/* REVIEW (Tulu): intended as "change mood". */}
-            <span className="font-kannada kn-optical">ಮೂಡ್ ಬದಲ್</span>
+            {/* "another mood". ಬೇತೆ is Tulu's ಬೇರೆ; a label rather than a command,
+                because Tulu's imperative would need the -ಲೆ ending and
+                ಬದಲಾಯಿಸುಲೆ is too long for the pill at 360px. */}
+            <span className="font-kannada kn-optical">ಬೇತೆ ಮೂಡ್</span>
             <svg viewBox="0 0 12 8" className="h-2 w-2.5" fill="none" aria-hidden="true">
               <path d="M1 1.5l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

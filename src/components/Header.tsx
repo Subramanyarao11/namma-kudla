@@ -11,11 +11,13 @@ interface HeaderProps {
   /** False on a mood that has no Spotify playlist behind it. */
   isSpotifyAvailable: boolean;
   onProviderChange: (provider: ProviderId) => void;
+  /** The mood currently playing, or null while the overlay is still up. */
+  listeningStationId: string | null;
 }
 
-export function Header({ activeProvider, isSpotifyAvailable, onProviderChange }: HeaderProps) {
+export function Header({ activeProvider, isSpotifyAvailable, onProviderChange, listeningStationId }: HeaderProps) {
   const { time, isReady } = useClock();
-  const listeners = useLiveListeners();
+  const listeners = useLiveListeners(listeningStationId);
   const showListeners = listeners >= MIN_VISIBLE_LISTENERS;
 
   return (

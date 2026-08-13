@@ -122,39 +122,6 @@ body {
   }
 }
 
-@keyframes leaf-sway {
-  0%,
-  100% {
-    transform: rotate(-1.4deg);
-  }
-  50% {
-    transform: rotate(1.6deg);
-  }
-}
-
-@keyframes steam-rise {
-  0% {
-    transform: translateY(0) scaleX(1);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.55;
-  }
-  100% {
-    transform: translateY(-26px) scaleX(1.4);
-    opacity: 0;
-  }
-}
-
-@keyframes rain-fall {
-  0% {
-    transform: translateY(-10%);
-  }
-  100% {
-    transform: translateY(110%);
-  }
-}
-
 /* Slow continuous Ken-Burns drift so the scene always feels alive, even with no mouse input. */
 @keyframes scene-drift {
   0% {
@@ -182,24 +149,6 @@ body {
   }
 }
 
-@keyframes light-streak {
-  0%,
-  100% {
-    transform: translateX(-120%);
-    opacity: 0;
-  }
-  8% {
-    opacity: 0.9;
-  }
-  45% {
-    opacity: 0.5;
-  }
-  55% {
-    transform: translateX(220%);
-    opacity: 0;
-  }
-}
-
 @keyframes twinkle-pulse {
   0%,
   100% {
@@ -209,6 +158,186 @@ body {
   50% {
     opacity: 1;
     transform: scale(1.15);
+  }
+}
+
+/*
+ * Per-scene ambient motion. Everything below animates only transform and
+ * opacity, so it all runs on the compositor and none of it triggers layout —
+ * which is the whole reason this is CSS and not a canvas.
+ *
+ * The illustrations underneath are stills, so each effect is aimed at a feature
+ * of a specific painting: the sun's reflection sits where the sun is, the smoke
+ * leaves the torch heads. The scene also drifts slowly under these layers, so
+ * every effect is kept soft-edged and generously sized — a hard-edged highlight
+ * would visibly slide off the thing it belongs to.
+ */
+
+/* The sun's reflection on the water. It breathes rather than travels: a sliding
+   highlight at this scale reads as a boat wake. */
+@keyframes sun-column {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: scaleX(0.88);
+  }
+  50% {
+    opacity: 0.38;
+    transform: scaleX(1.16);
+  }
+}
+
+/* The swell. Easing a soft striped band sideways gives the sea a moving surface
+   without animating individual waves, which at this size would look like a comb. */
+@keyframes water-shimmer {
+  0% {
+    transform: translate3d(-4%, 0, 0);
+    opacity: 0.14;
+  }
+  50% {
+    transform: translate3d(4%, 0, 0);
+    opacity: 0.32;
+  }
+  100% {
+    transform: translate3d(-4%, 0, 0);
+    opacity: 0.14;
+  }
+}
+
+/* A veil of cloud crossing the sky. Wide and faint enough never to read as a
+   shape, which is what keeps it from fighting the painted clouds. */
+@keyframes cloud-drift {
+  0% {
+    transform: translate3d(-40%, 0, 0);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: var(--cloud-peak, 0.14);
+  }
+  100% {
+    transform: translate3d(130%, 0, 0);
+    opacity: 0;
+  }
+}
+
+/* Birds crossing, rising and falling a little so the line is not dead flat. */
+@keyframes bird-cross {
+  0% {
+    transform: translate3d(-14vw, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(48vw, -26px, 0);
+  }
+  88% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(114vw, 8px, 0);
+    opacity: 0;
+  }
+}
+
+/* The wingbeat. Squashing vertically is enough at three pixels wide. */
+@keyframes bird-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.4);
+  }
+}
+
+/* Smoke off a torch head: rises, shears sideways, widens as it thins out. */
+@keyframes smoke-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0;
+  }
+  25% {
+    opacity: var(--smoke-peak, 0.16);
+  }
+  100% {
+    transform: translate3d(var(--smoke-x, 40px), -200px, 0) scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Flame, on purpose irregular. An even pulse reads as a breathing lightbulb;
+   real firelight catches and drops at uneven intervals. */
+@keyframes flame-flicker {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  11% {
+    opacity: 0.95;
+    transform: scale(1.07);
+  }
+  23% {
+    opacity: 0.62;
+  }
+  37% {
+    opacity: 1;
+    transform: scale(1.11);
+  }
+  46% {
+    opacity: 0.52;
+    transform: scale(0.97);
+  }
+  61% {
+    opacity: 0.88;
+  }
+  72% {
+    opacity: 0.66;
+    transform: scale(1.03);
+  }
+  87% {
+    opacity: 0.94;
+    transform: scale(1.06);
+  }
+}
+
+/* A lamp hung on a wire, swinging a few degrees from its knot. */
+@keyframes lamp-sway {
+  0%,
+  100% {
+    transform: rotate(-2.6deg);
+  }
+  50% {
+    transform: rotate(2.6deg);
+  }
+}
+
+/* Insects working a lamp: a wandering climb, never a straight line. */
+@keyframes firefly-wander {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.75;
+  }
+  38% {
+    transform: translate3d(var(--fly-x, 24px), -20px, 0);
+  }
+  62% {
+    transform: translate3d(calc(var(--fly-x, 24px) * -0.7), -38px, 0);
+    opacity: 0.5;
+  }
+  84% {
+    transform: translate3d(var(--fly-x, 24px), -58px, 0);
+    opacity: 0.26;
+  }
+  100% {
+    transform: translate3d(0, -76px, 0);
+    opacity: 0;
   }
 }
 
@@ -286,18 +415,6 @@ body {
 .animate-flicker {
   animation: light-flicker 5.2s ease-in-out infinite;
 }
-.animate-leaf {
-  animation: leaf-sway 6.5s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-.animate-leaf-delayed {
-  animation: leaf-sway 7.2s ease-in-out infinite;
-  animation-delay: -2s;
-  transform-origin: bottom center;
-}
-.animate-steam {
-  animation: steam-rise 4.5s ease-in infinite;
-}
 .animate-passing-shadow {
   animation: passing-shadow 14s ease-in-out infinite;
 }
@@ -310,11 +427,38 @@ body {
 .animate-dust {
   animation: dust-drift linear infinite;
 }
-.animate-light-streak {
-  animation: light-streak linear infinite;
-}
 .animate-twinkle {
   animation: twinkle-pulse ease-in-out infinite;
+}
+/* Durations are set per element, so each instance can run on its own clock and
+   the effect never falls into visible lockstep. */
+.animate-sun-column {
+  animation: sun-column ease-in-out infinite;
+}
+.animate-water-shimmer {
+  animation: water-shimmer ease-in-out infinite;
+}
+.animate-cloud-drift {
+  animation: cloud-drift linear infinite;
+}
+.animate-bird-cross {
+  animation: bird-cross linear infinite;
+}
+.animate-bird-flap {
+  animation: bird-flap ease-in-out infinite;
+}
+.animate-smoke {
+  animation: smoke-drift ease-out infinite;
+}
+.animate-flame {
+  animation: flame-flicker ease-in-out infinite;
+}
+.animate-lamp-sway {
+  animation: lamp-sway ease-in-out infinite;
+  transform-origin: top center;
+}
+.animate-firefly {
+  animation: firefly-wander ease-in-out infinite;
 }
 .animate-player-enter {
   animation: player-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -332,15 +476,20 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-grain,
   .animate-flicker,
-  .animate-leaf,
-  .animate-leaf-delayed,
-  .animate-steam,
   .animate-passing-shadow,
   .animate-pulse-dot,
   .animate-scene-drift,
   .animate-dust,
-  .animate-light-streak,
-  .animate-twinkle {
+  .animate-twinkle,
+  .animate-sun-column,
+  .animate-water-shimmer,
+  .animate-cloud-drift,
+  .animate-bird-cross,
+  .animate-bird-flap,
+  .animate-smoke,
+  .animate-flame,
+  .animate-lamp-sway,
+  .animate-firefly {
     animation: none !important;
   }
   .animate-player-enter,

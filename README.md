@@ -87,6 +87,38 @@ client-supplied id, which anyone could loop to inflate the number.
 an Upstash database another one of these radios already uses, an unqualified key
 would have each site counting the other's listeners as its own.
 
+### Visitor statistics
+
+The same Upstash database, if configured, also collects aggregate statistics —
+visits, unique visitors, which moods get started, how long each one is actually
+listened to, and coarse country, device, browser and referrer breakdowns. Read
+them with:
+
+```bash
+npm run stats        # totals, moods, geography, hour of day, last 14 days
+npm run stats -- 30  # a different number of days
+```
+
+That script talks to Redis directly, which is why the app exposes no endpoint for
+reading any of this: there is no public path to guess and no token to leak.
+
+**What is deliberately not stored:** no raw IP addresses, no user-agent strings,
+no per-visitor records of any kind. Every key is a counter or a HyperLogLog, so
+you can read *"412 visits from Karnataka on Chrome"* out of it and cannot read
+any individual visit back out. Unique visitors are counted with a hash that
+includes the period it belongs to, so the value for one person changes every day
+and cannot follow them past it.
+
+This is a constraint worth keeping. Raw IPs and user-agents are personal data
+under India's DPDP Act and the GDPR, which would put a notice-and-consent
+obligation on a site that otherwise needs none, and would turn a leaked Upstash
+token into a disclosure incident. Aggregates carry the same insight with none of
+that attached.
+
+Listening time piggybacks on the presence heartbeat that is already running, so
+it costs one extra Redis command per check-in rather than a timer of its own.
+`STATS_SALT` is optional and salts the visitor hashes, like `PRESENCE_SALT`.
+
 ### Canonical URL
 
 Canonical tags, Open Graph URLs, `robots.txt` and the sitemap all need an

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HEARTBEAT_MS } from "@/lib/presence";
 
 /**
@@ -11,15 +11,31 @@ import { HEARTBEAT_MS } from "@/lib/presence";
  * here ever guesses — an invented listener count would be a lie told to every
  * visitor, so the honest fallback is silence.
  */
-export function useLiveListeners(): number {
+export function useLiveListeners(listeningStationId?: string | null): number {
   const [count, setCount] = useState(0);
+
+  // Held in a ref so changing mood does not tear down and restart the timer:
+  // the heartbeat should keep its own rhythm regardless of what is playing.
+  // Written in an effect rather than during render, which React forbids.
+  const stationRef = useRef(listeningStationId);
+  useEffect(() => {
+    stationRef.current = listeningStationId;
+  }, [listeningStationId]);
 
   useEffect(() => {
     let active = true;
 
     const beat = async () => {
       try {
-        const response = await fetch("/api/presence", { method: "POST" });
+        const stationId = stationRef.current;
+        const response = await fetch("/api/presence", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          // The mood is what lets the server credit listening time to it. Absent
+          // until one is picked, so time spent on the overlay counts as presence
+          // but not as listening.
+          body: JSON.stringify(stationId ? { stationId } : {}),
+        });
         if (!response.ok) return;
         const data: { configured?: boolean; count?: number } = await response.json();
         if (active && data.configured) setCount(data.count ?? 0);

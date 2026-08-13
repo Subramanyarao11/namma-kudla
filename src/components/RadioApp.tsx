@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { STATIONS, getStationById, hasSpotify, type ProviderId, type Station } from "@/data/stations";
 import { STORAGE_KEYS, usePersistedValue, writePersistedValue } from "@/hooks/useLocalStorage";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
+import { recordPlay, useVisitOnce } from "@/hooks/useStats";
 import { SceneBackground } from "./scene/SceneBackground";
 import { Header } from "./Header";
 import { BrandTitle } from "./BrandTitle";
@@ -42,6 +43,7 @@ export function RadioApp() {
   const activeProvider: ProviderId = isSpotifyAvailable ? preferredProvider : "youtube";
 
   useDocumentMeta(activeStation, hasEntered);
+  useVisitOnce();
 
   const handleProviderChange = useCallback((provider: ProviderId) => {
     setManualProvider(provider);
@@ -54,8 +56,12 @@ export function RadioApp() {
       writePersistedValue(STORAGE_KEYS.station, station.id);
       setIsSelectorOpen(false);
       setHasEntered(true);
+      // Counted here rather than in the player: this is the point where someone
+      // chose the mood, which is the thing worth knowing. The player mounting is
+      // a consequence, and remounts for reasons that are not a new play.
+      recordPlay(station.id, hasSpotify(station) ? preferredProvider : "youtube");
     },
-    [],
+    [preferredProvider],
   );
 
   return (
@@ -66,6 +72,7 @@ export function RadioApp() {
         activeProvider={activeProvider}
         isSpotifyAvailable={isSpotifyAvailable}
         onProviderChange={handleProviderChange}
+        listeningStationId={hasEntered ? activeStation.id : null}
       />
 
       {hasEntered && (
