@@ -7,26 +7,45 @@ scene that changes per mood, with a floating glass player wired to real
 YouTube playlists.
 
 Namma Kudla is how the site is titled, shared and found; the scene itself is
-headed ತುಳುನಾಡ್ ರೇಡಿಯೋ, because the hero reads as part of the illustration and
+headed ತುಳುನಾಡ್‌ದ ರೇಡಿಯೋ, because the hero reads as part of the illustration and
 should describe what you are listening to rather than repeat the brand.
 
 ## The Tulu copy needs a native review
 
 Every Tulu string in this repo was written by a non-speaker working from
 reference, and is marked `REVIEW` at its definition. They are concentrated in
-two files — `src/data/stations.ts` (the mood names) and `src/lib/site.ts` (the
-hero, tagline and meta description) — plus four UI strings in `Footer`,
-`Player`, `StationSelector` and `FirstVisitOverlay`. Fix them before this is
-shown to anyone from Tulu Nadu.
+two files — `src/data/stations.ts` (the mood names and the per-mood footer
+asides) and `src/lib/site.ts` (the hero, tagline and meta description) — plus
+three UI strings in `Player`, `StationSelector` and `FirstVisitOverlay`. Fix
+them before this is shown to anyone from Tulu Nadu.
+
+Two have already come back from a native speaker: "change mood" was ಮೂಡ್ ಬದಲ್,
+which is not a Tulu imperative, and is now ಬೇತೆ ಮೂಡ್ ("another mood"); and
+ತುಳುನಾಡ್ takes the genitive ದ when it modifies a noun, so the hero is
+ತುಳುನಾಡ್‌ದ ರೇಡಿಯೋ and the mood is ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು. The bare form survives only
+in `Header`, where ಕುಡ್ಲ, ತುಳುನಾಡ್ is a place label rather than a modifier.
 
 Tulu is written in Kannada script here, which is what Tulu speakers actually
 use. The Tulu-Tigalari Unicode block exists but has effectively no font support.
-So `font-kannada` throughout the app names the script, not the language, and
-`<html lang>` is `tcy-Knda` — Tulu, in the Kannada script.
+So `font-kannada` throughout the app names the script, not the language.
+
+`<html lang>` should be `tcy-Knda` and isn't — it says `kn-IN`. Nothing in a
+browser can act on `tcy`: Chrome's translator reports `unavailable` for both
+`tcy` and `tcy-Knda` while `kn` is `downloadable`, so the accurate tag silently
+costs every reader the "translate this page" prompt, and there is no Tulu
+screen-reader voice for it to buy instead. A Kannada voice reading Kannada
+glyphs is the closest this text gets to being pronounced right. The honest claim
+still ships where it is machine-readable and acted on — `StructuredData` sets
+`inLanguage: tcy-Knda`. Worth revisiting if Chrome ever ships a `tcy` model:
+
+```sh
+# in the browser console, on the deployed site
+await Translator.availability({ sourceLanguage: 'tcy', targetLanguage: 'en' })
+```
 
 ## The site says "from Tulu Nadu", not "in Tulu", on purpose
 
-ತುಳುನಾಡ್ ಪೊರ್ಲು is Tulu-language throughout and ದೈವದ ನೇಮ is Tulu devotional, but
+ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು is Tulu-language throughout and ದೈವದ ನೇಮ is Tulu devotional, but
 ಯಕ್ಷಗಾನ ರಾತ್ರೆ is sung in Kannada. Yakshagana belongs to this coast without
 belonging to the language. It is also the deepest playlist of the three at 79
 tracks, so it stays — and the meta copy describes the region rather than

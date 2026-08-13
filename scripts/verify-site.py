@@ -20,7 +20,7 @@ OUT = Path(__file__).resolve().parent.parent / "tmp" / "verify"
 OUT.mkdir(parents=True, exist_ok=True)
 
 VIEWPORTS = [("desktop", 1440, 900), ("phone", 390, 844)]
-MOODS = ["ತುಳುನಾಡ್ ಪೊರ್ಲು", "ದೈವದ ನೇಮ", "ಯಕ್ಷಗಾನ ರಾತ್ರೆ"]
+MOODS = ["ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು", "ದೈವದ ನೇಮ", "ಯಕ್ಷಗಾನ ರಾತ್ರೆ"]
 
 
 def main() -> None:
@@ -52,7 +52,7 @@ def main() -> None:
             print(f"[{label}] title after entering: {page.title()}")
 
             for index, mood in enumerate(MOODS[1:], start=3):
-                page.get_by_role("button", name="ಮೂಡ್ ಬದಲ್", exact=False).first.click()
+                page.get_by_role("button", name="ಬೇತೆ ಮೂಡ್", exact=False).first.click()
                 page.wait_for_timeout(900)
                 if index == 3:
                     page.screenshot(path=OUT / f"{label}-sheet.png")

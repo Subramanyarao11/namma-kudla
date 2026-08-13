@@ -10,7 +10,7 @@
  * REVIEW: every Tulu string in this file was written by a non-speaker and needs
  * a native check before this ships. The names are the ones most worth getting
  * right — they are the first words anyone reads.
- *   nameTulu "ತುಳುನಾಡ್ ಪೊರ್ಲು"  — intended: "the beauty of Tulu Nadu"
+ *   nameTulu "ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು"  — intended: "the beauty of Tulu Nadu"
  *   nameTulu "ದೈವದ ನೇಮ"        — intended: the daiva ritual/nema
  *   nameTulu "ಯಕ್ಷಗಾನ ರಾತ್ರೆ"    — intended: "Yakshagana night"
  */
@@ -52,6 +52,17 @@ export interface Station {
   nameTulu: string;
   nameEnglish: string;
   description: string;
+  /**
+   * The aside in the bottom-left corner, written for this mood's scene.
+   *
+   * One line per station rather than one for the site: it sits on the artwork,
+   * so a single line has to be vague enough to suit a sunset, a torchlit grove
+   * and a night stage at once, and vague is the one thing this kind of line
+   * cannot be.
+   *
+   * REVIEW: Tulu, written by a non-speaker. See the note at the top.
+   */
+  footerNote: string;
   backgroundVariant: BackgroundVariant;
   theme: StationTheme;
   /**
@@ -86,9 +97,10 @@ export function hasSpotify(station: Station): station is SpotifyStation {
 export const STATIONS: Station[] = [
   {
     id: "tulunad-porlu",
-    nameTulu: "ತುಳುನಾಡ್ ಪೊರ್ಲು",
+    nameTulu: "ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು",
     nameEnglish: "Tulu Nadu Beauty",
     description: "Coast road, coconut palms, the songs everyone here knows.",
+    footerNote: "ಗಟ್ಟದ ರೋಡ್‌ಡ್ ಜಾಗ್ರತೆ. ಪಾಟ್ ಮಾತ್ರ unlimited.",
     backgroundVariant: "tulunad-porlu",
     theme: {
       accent: "#EFA637",
@@ -102,14 +114,15 @@ export const STATIONS: Station[] = [
       backgroundPosition: "center 44%",
       backgroundPositionPortrait: "46% 48%",
     },
-    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=PLFuuGDgqMKLFohHVlevfcrnabmd7-iIIO",
-    youtubePlaylistId: "PLFuuGDgqMKLFohHVlevfcrnabmd7-iIIO",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=PLZ840zjql5kI",
+    youtubePlaylistId: "PLZ840zjql5kI",
   },
   {
     id: "daivada-nema",
     nameTulu: "ದೈವದ ನೇಮ",
     nameEnglish: "Daiva Nema",
     description: "Torchlight in the grove, drums from somewhere behind you.",
+    footerNote: "ಚೆಂಡೆ ಬೊಳ್ಪು ಮುಟ್ಟ. ಪಾಟ್ ಮಾತ್ರ unlimited.",
     backgroundVariant: "daivada-nema",
     theme: {
       accent: "#E2703A",
@@ -131,6 +144,7 @@ export const STATIONS: Station[] = [
     nameTulu: "ಯಕ್ಷಗಾನ ರಾತ್ರೆ",
     nameEnglish: "Yakshagana Night",
     description: "An all-night stage in a field, and nobody goes home early.",
+    footerNote: "ಗದ್ದೆಡ್ ಇಡೀ ಊರು. ಪಾಟ್ ಮಾತ್ರ unlimited.",
     backgroundVariant: "yakshagana-ratri",
     theme: {
       accent: "#E0A33C",

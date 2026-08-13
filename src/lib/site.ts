@@ -8,7 +8,7 @@
  * use among themselves, which is the register this whole site is written in.
  *
  * REVIEW: the Tulu strings below need a native check. Best-effort intent:
- *   heroTitleTulu "ತುಳುನಾಡ್ ರೇಡಿಯೋ"            — "Tulu Nadu Radio"
+ *   heroTitleTulu "ತುಳುನಾಡ್‌ದ ರೇಡಿಯೋ"            — "Tulu Nadu Radio"
  *   taglineTulu   "ಒಂಜೊಂಜಿ ಮೂಡ್‌ಗ್ ಒಂಜಿ ಪಾಟ್"  — "for each mood, one song"
  *   descriptionTulu                            — the meta description, same sense as `description`
  */
@@ -25,7 +25,7 @@ export const SITE = {
    * part of the illustration and describes the thing you are listening to,
    * while ನಮ್ಮ ಕುಡ್ಲ is how the site is titled, shared and found.
    */
-  heroTitleTulu: "ತುಳುನಾಡ್ ರೇಡಿಯೋ",
+  heroTitleTulu: "ತುಳುನಾಡ್‌ದ ರೇಡಿಯೋ",
   taglineTulu: "ಒಂಜೊಂಜಿ ಮೂಡ್‌ಗ್ ಒಂಜಿ ಪಾಟ್",
   taglineEnglish: "A song for every Tulu Nadu mood",
   /**
@@ -39,11 +39,20 @@ export const SITE = {
   descriptionTulu:
     "ತುಳುನಾಡ್‌ದ ಮೂಜಿ ಮೂಡ್, ಒಂಜೊಂಜಿಗ್ ಒಂಜಿ ಪಾಟ್‌ದ ಪಟ್ಟಿ. YouTube Music‌ಡ್ ಕೇನುಲೆ.",
   /**
-   * tcy is Tulu. The script is Kannada, hence tcy-Knda on <html lang> — the
-   * language is not Kannada even though every glyph on the page is.
+   * The page is Tulu (tcy) written in Kannada script, and tcy-Knda is what it
+   * should say. It doesn't, deliberately: no browser can do anything with tcy.
+   * Chrome's translator reports `unavailable` for both tcy and tcy-Knda while
+   * kn is `downloadable`, so declaring the accurate tag costs a reader the
+   * translate prompt entirely and buys nothing — and no screen reader has a
+   * Tulu voice either, so a Kannada one reading Kannada glyphs is as close as
+   * this text can get to being pronounced correctly.
+   *
+   * So the browser-facing tags say Kannada and the machine-readable claim stays
+   * honest: StructuredData still publishes inLanguage: tcy-Knda, which is the
+   * signal search engines actually index. Revisit if Chrome ever ships tcy.
    */
-  locale: "tcy_IN",
-  htmlLang: "tcy-Knda",
+  locale: "kn_IN",
+  htmlLang: "kn-IN",
   altLocale: "en_IN",
   themeColor: "#0d2a30",
   backgroundColor: "#071a1f",

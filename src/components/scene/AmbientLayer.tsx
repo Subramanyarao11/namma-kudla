@@ -62,7 +62,7 @@ const anchorY = (percent: number) => `calc(50% + (${percent}% - 50%) * var(--sce
 /** A width measured on the painting, which has to shrink with the same crop. */
 const spanX = (percent: number) => `calc(${percent}% * var(--scene-fx, 1))`;
 
-/* --- ತುಳುನಾಡ್ ಪೊರ್ಲು: the coast road at sunset -------------------------- */
+/* --- ತುಳುನಾಡ್‌ದ ಪೊರ್ಲು: the coast road at sunset -------------------------- */
 
 /**
  * Glints on the swell. Held to the left of frame because that is where the sea

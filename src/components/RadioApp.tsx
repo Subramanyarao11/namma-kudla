@@ -84,7 +84,7 @@ export function RadioApp() {
         />
       )}
 
-      <Footer />
+      <Footer station={activeStation} />
 
       <StationSelector
         isOpen={hasEntered && isSelectorOpen}
