@@ -1,0 +1,54 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Raw generated scene clips. Only the optimised copies in public/videos/scenes
+# ship; these masters are reproducible via scripts/generate-mood-videos.mjs.
+/video-src/
+
+# Signage repair intermediates: rendered overlays, sampled frames and the font
+# used to draw them. All rebuildable via scripts/render-scene-text.py, and the
+# corrected pixels are already baked into the shipped videos and stills.
+/.tmp-text-overlays/
+/.tmp-frame-source.png
+
+# Screenshots and filmstrips from the scene diagnostics in scripts/.
+/tmp/

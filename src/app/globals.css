@@ -1,0 +1,367 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-kannada: "Noto Sans Kannada", "Noto Sans", sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-kannada: var(--font-kannada);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: #10091a;
+  color: #f6efe3;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-kannada {
+  font-family: var(--font-kannada);
+}
+
+/*
+ * Noto Sans Kannada reserves a tall ascent for stacked vowel signs, so a word's
+ * visible body sits about 0.27em above the centre of its line box — a constant,
+ * independent of font size and line height. Inter's body sits on that centre,
+ * which is why Latin rows need no help. Since `align-items: center` centres the
+ * box rather than the glyphs, Kannada labels ride high inside pills and every
+ * dot, chevron and logo beside them lands too low. This drops the glyphs onto
+ * the box centre so both relationships come out right.
+ *
+ * The font metrics put that gap at 0.27em; we ease back to 0.2em because the
+ * vowel signs riding above the base band carry visual weight the band ignores.
+ *
+ * Single-line labels only: it shifts a whole block rather than each line.
+ */
+.kn-optical {
+  transform: translateY(0.2em);
+}
+
+/* Same correction from the other side, for an icon that must meet Kannada it
+   does not share a text box with. Requires the matching font size. */
+.kn-optical-icon {
+  transform: translateY(-0.2em);
+}
+
+::selection {
+  background: rgba(242, 169, 59, 0.35);
+}
+
+/* Custom scrollbar for the station sheet on small screens */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+
+/*
+ * Scene framing. A phone crops a 16:9 illustration to roughly a quarter of its
+ * width, so portrait gets its own focal point per mood. Driven by custom
+ * properties because inline styles can't carry a media query.
+ */
+.scene-framing {
+  object-position: var(--scene-pos, center 45%);
+}
+
+@media (orientation: portrait) {
+  .scene-framing {
+    object-position: var(--scene-pos-portrait, var(--scene-pos, center 45%));
+  }
+}
+
+@keyframes grain-shift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(-1%, -2%, 0);
+  }
+  30% {
+    transform: translate3d(1.5%, 1%, 0);
+  }
+  50% {
+    transform: translate3d(-1%, 2%, 0);
+  }
+  70% {
+    transform: translate3d(2%, -1%, 0);
+  }
+  90% {
+    transform: translate3d(-1.5%, 1.5%, 0);
+  }
+}
+
+@keyframes light-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  45% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  55% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes leaf-sway {
+  0%,
+  100% {
+    transform: rotate(-1.4deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+
+@keyframes steam-rise {
+  0% {
+    transform: translateY(0) scaleX(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(-26px) scaleX(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(110%);
+  }
+}
+
+/* Slow continuous Ken-Burns drift so the scene always feels alive, even with no mouse input. */
+@keyframes scene-drift {
+  0% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.11) translate3d(-1.2%, -0.8%, 0);
+  }
+  100% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes dust-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(var(--dust-x, 40px), -140px, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes light-streak {
+  0%,
+  100% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  55% {
+    transform: translateX(220%);
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle-pulse {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes passing-shadow {
+  0%,
+  85%,
+  100% {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  90% {
+    opacity: 0.12;
+  }
+  95% {
+    opacity: 0.05;
+    transform: translateX(30%);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(74, 222, 128, 0);
+  }
+}
+
+@keyframes player-enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sheet-enter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-grain {
+  animation: grain-shift 9s steps(8) infinite;
+}
+.animate-flicker {
+  animation: light-flicker 5.2s ease-in-out infinite;
+}
+.animate-leaf {
+  animation: leaf-sway 6.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.animate-leaf-delayed {
+  animation: leaf-sway 7.2s ease-in-out infinite;
+  animation-delay: -2s;
+  transform-origin: bottom center;
+}
+.animate-steam {
+  animation: steam-rise 4.5s ease-in infinite;
+}
+.animate-passing-shadow {
+  animation: passing-shadow 14s ease-in-out infinite;
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+.animate-scene-drift {
+  animation: scene-drift 26s ease-in-out infinite;
+}
+.animate-dust {
+  animation: dust-drift linear infinite;
+}
+.animate-light-streak {
+  animation: light-streak linear infinite;
+}
+.animate-twinkle {
+  animation: twinkle-pulse ease-in-out infinite;
+}
+.animate-player-enter {
+  animation: player-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-sheet-enter {
+  animation: sheet-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-panel-enter {
+  animation: panel-enter 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-overlay-fade {
+  animation: overlay-fade 0.5s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-grain,
+  .animate-flicker,
+  .animate-leaf,
+  .animate-leaf-delayed,
+  .animate-steam,
+  .animate-passing-shadow,
+  .animate-pulse-dot,
+  .animate-scene-drift,
+  .animate-dust,
+  .animate-light-streak,
+  .animate-twinkle {
+    animation: none !important;
+  }
+  .animate-player-enter,
+  .animate-sheet-enter,
+  .animate-panel-enter,
+  .animate-overlay-fade {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(38, 26, 20, 0.72), rgba(20, 14, 12, 0.82));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 226, 180, 0.14);
+  box-shadow:
+    0 18px 50px -12px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.text-shadow-soft {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
